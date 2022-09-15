@@ -129,37 +129,23 @@ AlquerqueBoard.prototype.copy = function () {
   return result;
 };
 
-AlquerqueBoard.prototype.getMoves = function () {
-  var actions = [];
-  if( this.previousAction && this.previousAction.by == this.active ) {
-    actions = this.getJumpsFor( this.previousAction.to );
-  } else {
-    for(var y=0; y<5; ++y) {
-      for(var x=0; x<5; ++x) {
-        var a_jumps = this.getJumpsFor( { x: x, y: y } );
-        var a_moves = []
-        if ( this.active == this.field[x][y].piece ) {
-          for(var i=0; i<this.DIRECTION.move[this.active][x][y].length; ++i) {
-            var direction = this.DIRECTION.move[this.active][x][y][i];
-            if ( this.NONE == this.field[x+direction.x][y+direction.y].piece ) {
-              if( this.rules.invertLast || !this.field[x][y].previous ||
-                ( x+direction.x != this.field[x][y].previous.x ||
-                  y+direction.y != this.field[x][y].previous.y )
-              ) {
-                a_moves[a_moves.length] = {
-                  type: this.move, by: this.active,
-                  from: { x: x, y: y }, direction: direction,
-                  to: { x: x + direction.x, y: y + direction.y }
-                }
+AlquerqueBoard.prototype.getMoves = function (actions) {
+  for(var y=0; y<5; ++y) {
+    for(var x=0; x<5; ++x) {
+      if ( this.active == this.field[x][y].piece ) {
+        for(var i=0; i<this.DIRECTION.move[this.active][x][y].length; ++i) {
+          var direction = this.DIRECTION.move[this.active][x][y][i];
+          if ( this.NONE == this.field[x+direction.x][y+direction.y].piece ) {
+            if( this.rules.invertLast || !this.field[x][y].previous ||
+              ( x+direction.x != this.field[x][y].previous.x ||
+                y+direction.y != this.field[x][y].previous.y )
+            ) {
+              actions[actions.length] = {
+                type: this.move, by: this.active,
+                from: { x: x, y: y }, direction: direction,
+                to: { x: x + direction.x, y: y + direction.y }
               }
             }
-          }
-        }
-        a = a_moves.concat(a_jumps)
-        document.write(a);
-        if( a ) {
-          for(var i=0; i<a.length; ++i) {
-            actions[actions.length] = a[i];
           }
         }
       }
@@ -187,6 +173,25 @@ AlquerqueBoard.prototype.getJumpsFor = function ( field ) {
   return actions;
 };
 
+AlquerqueBoard.prototype.getJumps = function () {
+  var actions = [];
+  if( this.previousAction && this.previousAction.by == this.active ) {
+    actions = this.getJumpsFor( this.previousAction.to );
+  } else {
+    for(var y=0; y<5; ++y) {
+      for(var x=0; x<5; ++x) {
+        var a = this.getJumpsFor( { x: x, y: y } );
+        if( a ) {
+          for(var i=0; i<a.length; ++i) {
+            actions[actions.length] = a[i];
+          }
+        }
+      }
+    }
+  }
+  return actions;
+};
+
 AlquerqueBoard.prototype.noJumpsFor = function ( field ) {
   var result = true;
   var opponent = this.active ^ 1;
@@ -200,7 +205,8 @@ AlquerqueBoard.prototype.noJumpsFor = function ( field ) {
 };
 
 AlquerqueBoard.prototype.getActions = function () {
-  var actions = this.getMoves();
+  var actions = this.getJumps();
+  actions = this.getMoves(actions);
   return actions;
 };
 
