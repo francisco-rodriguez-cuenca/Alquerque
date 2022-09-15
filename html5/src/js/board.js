@@ -68,6 +68,7 @@ function AlquerqueBoard() {
   this.rules = {
     invertLast : false
   };
+  this.can_jump = [];
 }
 
 AlquerqueBoard.prototype.setup = function () {
@@ -178,6 +179,7 @@ AlquerqueBoard.prototype.getJumps = function () {
       for(var x=0; x<5; ++x) {
         var a = this.getJumpsFor( { x: x, y: y } );
         if( a ) {
+          this.can_jump[this.can_jump.length] = { x: x, y: y };
           for(var i=0; i<a.length; ++i) {
             actions[actions.length] = a[i];
           }
@@ -218,6 +220,9 @@ AlquerqueBoard.prototype.doAction = function ( action ) {
       from: { x: action.from.x, y: action.from.y }, direction: action.direction,
       to: { x: action.to.x, y: action.to.y }
     };
+    for(var i=0; i<this.can_jump.length; ++i) {
+      this.field[this.can_jump[i].x][this.can_jump[i].y] = this.PIECENONE;
+    }
   } else if ( this.jump == action.type ) {
     this.field[action.to.x][action.to.y] = { piece: this.active, previous: null };
     this.field[action.from.x][action.from.y] = this.PIECENONE;
@@ -231,6 +236,7 @@ AlquerqueBoard.prototype.doAction = function ( action ) {
       over: { x: action.over.x, y: action.over.y }
     };
   }
+  this.can_jump = [];
 };
 
 AlquerqueBoard.prototype.switchPlayer = function () {
