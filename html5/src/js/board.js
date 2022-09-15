@@ -156,6 +156,7 @@ AlquerqueBoard.prototype.getMoves = function () {
           }
         }
         a = a_moves.concat(a_jumps)
+        document.write(a);
         if( a ) {
           for(var i=0; i<a.length; ++i) {
             actions[actions.length] = a[i];
