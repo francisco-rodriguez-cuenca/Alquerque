@@ -93,7 +93,7 @@ AlquerqueBoard.prototype.setup = function () {
       this.PIECEBLACK, this.PIECEBLACK
     ]
   ];
-  this.active = this.WHITE;
+  this.active = this.BLACK;
   this.previousAction = { type: this.none };
 };
 
