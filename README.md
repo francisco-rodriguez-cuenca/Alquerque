@@ -1,7 +1,7 @@
 <img alt="Alquerque icon" width="64" src="html5/src/img/icons/alquerque64.png" /> Alquerque
 ====================
 
-* <em>Start an online</em> <b>Alquerque</b> <em>session on</em> http://omerkel.github.io/Alquerque/html5/src
+* <em>Start an online</em> <b>Alquerque</b> <em>session on</em> https://francisco-rodriguez-cuenca.github.io/Alquerque/html5/src/
 * <em>Android APK available for install</em> <img align="top" width="32" src="res/android.gif" /> https://github.com/OMerkel/Alquerque/releases/tag/release_0.1
     * requires minimum Android 4.4.2 (API-19)
 * <em>Runs in various browsers on</em>
