@@ -202,8 +202,9 @@ AlquerqueBoard.prototype.noJumpsFor = function ( field ) {
 
 AlquerqueBoard.prototype.getActions = function () {
   var actions = this.getJumps();
-  if(!( this.previousAction && this.previousAction.by == this.active )) {}
+  if(!( this.previousAction && this.previousAction.by == this.active )) {
     actions = this.getMoves(actions);
+  }
   return actions;
 };
 
