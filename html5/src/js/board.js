@@ -131,20 +131,30 @@ AlquerqueBoard.prototype.copy = function () {
 
 AlquerqueBoard.prototype.getMoves = function () {
   var actions = [];
-  for(var y=0; y<5; ++y) {
-    for(var x=0; x<5; ++x) {
-      if ( this.active == this.field[x][y].piece ) {
-        for(var i=0; i<this.DIRECTION.move[this.active][x][y].length; ++i) {
-          var direction = this.DIRECTION.move[this.active][x][y][i];
-          if ( this.NONE == this.field[x+direction.x][y+direction.y].piece ) {
-            if( this.rules.invertLast || !this.field[x][y].previous ||
-              ( x+direction.x != this.field[x][y].previous.x ||
-                y+direction.y != this.field[x][y].previous.y )
-            ) {
-              actions[actions.length] = {
-                type: this.move, by: this.active,
-                from: { x: x, y: y }, direction: direction,
-                to: { x: x + direction.x, y: y + direction.y }
+  if( this.previousAction && this.previousAction.by == this.active ) {
+    actions = this.getJumpsFor( this.previousAction.to );
+  } else {
+    for(var y=0; y<5; ++y) {
+      for(var x=0; x<5; ++x) {
+        var a = this.getJumpsFor( { x: x, y: y } );
+        if( a ) {
+          for(var i=0; i<a.length; ++i) {
+            actions[actions.length] = a[i];
+          }
+        }
+        if ( this.active == this.field[x][y].piece ) {
+          for(var i=0; i<this.DIRECTION.move[this.active][x][y].length; ++i) {
+            var direction = this.DIRECTION.move[this.active][x][y][i];
+            if ( this.NONE == this.field[x+direction.x][y+direction.y].piece ) {
+              if( this.rules.invertLast || !this.field[x][y].previous ||
+                ( x+direction.x != this.field[x][y].previous.x ||
+                  y+direction.y != this.field[x][y].previous.y )
+              ) {
+                actions[actions.length] = {
+                  type: this.move, by: this.active,
+                  from: { x: x, y: y }, direction: direction,
+                  to: { x: x + direction.x, y: y + direction.y }
+                }
               }
             }
           }
@@ -154,6 +164,32 @@ AlquerqueBoard.prototype.getMoves = function () {
   }
   return actions;
 };
+
+// AlquerqueBoard.prototype.getMoves = function () {
+//   var actions = [];
+//   for(var y=0; y<5; ++y) {
+//     for(var x=0; x<5; ++x) {
+//       if ( this.active == this.field[x][y].piece ) {
+//         for(var i=0; i<this.DIRECTION.move[this.active][x][y].length; ++i) {
+//           var direction = this.DIRECTION.move[this.active][x][y][i];
+//           if ( this.NONE == this.field[x+direction.x][y+direction.y].piece ) {
+//             if( this.rules.invertLast || !this.field[x][y].previous ||
+//               ( x+direction.x != this.field[x][y].previous.x ||
+//                 y+direction.y != this.field[x][y].previous.y )
+//             ) {
+//               actions[actions.length] = {
+//                 type: this.move, by: this.active,
+//                 from: { x: x, y: y }, direction: direction,
+//                 to: { x: x + direction.x, y: y + direction.y }
+//               }
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+//   return actions;
+// };
 
 AlquerqueBoard.prototype.getJumpsFor = function ( field ) {
   var actions = [];
@@ -206,8 +242,7 @@ AlquerqueBoard.prototype.noJumpsFor = function ( field ) {
 };
 
 AlquerqueBoard.prototype.getActions = function () {
-  var actions = this.getJumps();
-  if (0 == actions.length) actions = this.getMoves();
+  var actions = this.getMoves();
   return actions;
 };
 
