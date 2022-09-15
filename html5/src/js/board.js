@@ -129,8 +129,7 @@ AlquerqueBoard.prototype.copy = function () {
   return result;
 };
 
-AlquerqueBoard.prototype.getMoves = function () {
-  var actions = [];
+AlquerqueBoard.prototype.getMoves = function (actions) {
   for(var y=0; y<5; ++y) {
     for(var x=0; x<5; ++x) {
       if ( this.active == this.field[x][y].piece ) {
@@ -207,7 +206,7 @@ AlquerqueBoard.prototype.noJumpsFor = function ( field ) {
 
 AlquerqueBoard.prototype.getActions = function () {
   var actions = this.getJumps();
-  if (0 == actions.length) actions = this.getMoves();
+  actions = this.getMoves(actions);
   return actions;
 };
 
