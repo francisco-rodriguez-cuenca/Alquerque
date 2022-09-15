@@ -179,7 +179,9 @@ AlquerqueBoard.prototype.getJumps = function () {
       for(var x=0; x<5; ++x) {
         var a = this.getJumpsFor( { x: x, y: y } );
         if( a ) {
-          this.can_jump[this.can_jump.length] = { x: x, y: y };
+          if (a.length >0){
+            this.can_jump[this.can_jump.length] = { x: x, y: y };
+          }
           for(var i=0; i<a.length; ++i) {
             actions[actions.length] = a[i];
           }
