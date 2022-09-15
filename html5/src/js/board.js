@@ -34,21 +34,17 @@ function AlquerqueBoard() {
     this.SOUTHWEST, this.WEST ];
   this.E_W = [ this.EAST, this.WEST ];
   this.DIRECTION = { move: [], jump: [] };
-  this.DIRECTION.move[this.WHITE] = [ [
-    [ this.NORTH, this.NORTHEAST, this.EAST ], [ this.NORTH, this.EAST ],
+  this.DIRECTION.move[this.WHITE] = [ 
+    [ [ this.NORTH, this.NORTHEAST, this.EAST ], [ this.NORTH, this.EAST, this.SOUTH],
     [ this.NORTH, this.NORTHEAST, this.EAST, this.SOUTHEAST, this.SOUTH ],
-    [ this.SOUTH, this.EAST ], [ this.EAST, this.SOUTHEAST, this.SOUTH ] ], [
-    [ this.NORTH, this.EAST ], [ this.NORTH, this.NORTHEAST, this.EAST ],
-    [ this.NORTH, this.EAST, this.SOUTH ],
-    [ this.EAST, this.SOUTHEAST, this.SOUTH ], [ this.EAST, this.SOUTH ] ], [
-    this.W_NW_N_NE_E, this.W_N_E, this.ALLDIRECTIONS, this.E_S_W, this.E_SE_S_SW_W ], [
-    [ this.WEST, this.NORTH ], [ this.WEST, this.NORTHWEST, this.NORTH ],
-    [ this.SOUTH, this.WEST, this.NORTH ],
-    [ this.SOUTH, this.SOUTHWEST, this.WEST ], [ this.SOUTH, this.WEST ] ], [
-    [ this.WEST, this.NORTHWEST, this.NORTH ], [ this.WEST, this.NORTH ],
+    [ this.SOUTH, this.EAST, this.NORTH ], [ this.EAST, this.SOUTHEAST, this.SOUTH ] ], 
+    [ this.W_N_E, this.ALLDIRECTIONS, this.MAINDIRECTIONS, this.ALLDIRECTIONS, this.E_S_W ], 
+    [ this.W_NW_N_NE_E, this.MAINDIRECTIONS, this.ALLDIRECTIONS, this.MAINDIRECTIONS, this.E_SE_S_SW_W ], 
+    [ this.W_N_E, this.ALLDIRECTIONS, this.MAINDIRECTIONS, this.ALLDIRECTIONS, this.E_S_W ],
+    [ [ this.WEST, this.NORTHWEST, this.NORTH ], [ this.WEST, this.NORTH, this.SOUTH ],
     [ this.SOUTH, this.SOUTHWEST, this.WEST, this.NORTHWEST, this.NORTH ],
-    [ this.SOUTH, this.WEST ], [ this.SOUTH, this.SOUTHWEST, this.WEST ]
-   ] ];
+    [ this.SOUTH, this.WEST, this.NORTH ], [ this.SOUTH, this.SOUTHWEST, this.WEST ] ] 
+  ];
   this.DIRECTION.move[this.BLACK] = this.DIRECTION.move[this.WHITE];
   this.DIRECTION.jump[this.WHITE] = [ [
    [ this.NORTH, this.NORTHEAST, this.EAST ], [ this.NORTH, this.EAST ],
