@@ -219,6 +219,7 @@ AlquerqueBoard.prototype.doAction = function ( action ) {
     for(var i=0; i<this.can_jump.length; ++i) {
       this.field[this.can_jump[i].x][this.can_jump[i].y] = this.PIECENONE ;
     }
+    this.can_jump = [];
     this.switchPlayer();
     this.previousAction = {
       type: this.move, by: action.by,
@@ -227,6 +228,7 @@ AlquerqueBoard.prototype.doAction = function ( action ) {
     };
     console.log( this.can_jump );
   } else if ( this.jump == action.type ) {
+    this.can_jump = [];
     this.field[action.to.x][action.to.y] = { piece: this.active, previous: null };
     this.field[action.from.x][action.from.y] = this.PIECENONE;
     this.field[action.over.x][action.over.y] = this.PIECENONE;
@@ -239,7 +241,6 @@ AlquerqueBoard.prototype.doAction = function ( action ) {
       over: { x: action.over.x, y: action.over.y }
     };
   }
-  this.can_jump = [];
 };
 
 AlquerqueBoard.prototype.switchPlayer = function () {
