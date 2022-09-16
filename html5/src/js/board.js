@@ -217,7 +217,12 @@ AlquerqueBoard.prototype.doAction = function ( action ) {
     this.field[action.to.x][action.to.y] = { piece: this.active, previous: action.from };
     this.field[action.from.x][action.from.y] = this.PIECENONE;
     for(var i=0; i<this.can_jump.length; ++i) {
-      this.field[this.can_jump[i].x][this.can_jump[i].y] = this.PIECENONE ;
+      if (this.can_jump[i].x == action.from.x && this.can_jump[i].y == action.from.y){
+        this.field[action.to.x][action.to.y] = this.PIECENONE ;
+      }
+      else{
+        this.field[this.can_jump[i].x][this.can_jump[i].y] = this.PIECENONE ;
+      }
     }
     this.can_jump = [];
     this.switchPlayer();
