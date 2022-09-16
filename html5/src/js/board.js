@@ -68,6 +68,7 @@ function AlquerqueBoard() {
   this.rules = {
     invertLast : false
   };
+  this.can_jump = [];
 }
 
 AlquerqueBoard.prototype.setup = function () {
@@ -93,7 +94,7 @@ AlquerqueBoard.prototype.setup = function () {
       this.PIECEBLACK, this.PIECEBLACK
     ]
   ];
-  this.active = this.BLACK;
+  this.active = this.WHITE;
   this.previousAction = { type: this.none };
 };
 
@@ -178,6 +179,9 @@ AlquerqueBoard.prototype.getJumps = function () {
       for(var x=0; x<5; ++x) {
         var a = this.getJumpsFor( { x: x, y: y } );
         if( a ) {
+          if (a.length >0){
+            this.can_jump[this.can_jump.length] = { x: x, y: y };
+          }
           for(var i=0; i<a.length; ++i) {
             actions[actions.length] = a[i];
           }
@@ -212,13 +216,24 @@ AlquerqueBoard.prototype.doAction = function ( action ) {
   if ( this.move == action.type ) {
     this.field[action.to.x][action.to.y] = { piece: this.active, previous: action.from };
     this.field[action.from.x][action.from.y] = this.PIECENONE;
+    for(var i=0; i<this.can_jump.length; ++i) {
+      if (this.can_jump[i].x == action.from.x && this.can_jump[i].y == action.from.y){
+        this.field[action.to.x][action.to.y] = this.PIECENONE ;
+      }
+      else{
+        this.field[this.can_jump[i].x][this.can_jump[i].y] = this.PIECENONE ;
+      }
+    }
+    this.can_jump = [];
     this.switchPlayer();
     this.previousAction = {
       type: this.move, by: action.by,
       from: { x: action.from.x, y: action.from.y }, direction: action.direction,
       to: { x: action.to.x, y: action.to.y }
     };
+    console.log( this.can_jump );
   } else if ( this.jump == action.type ) {
+    this.can_jump = [];
     this.field[action.to.x][action.to.y] = { piece: this.active, previous: null };
     this.field[action.from.x][action.from.y] = this.PIECENONE;
     this.field[action.over.x][action.over.y] = this.PIECENONE;
